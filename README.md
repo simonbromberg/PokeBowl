@@ -1,5 +1,5 @@
 # PokeBowl
-Having fun with the PokéApi in SwiftUI
+Having fun with the [PokéApi](https://pokeapi.co/) in SwiftUI to build some fun and educational games for my son.
 
 ## Installation
 You can run this on an iPad (running iPadOS 17).
