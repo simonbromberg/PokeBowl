@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct EvolutionView: View {
+public struct EvolutionView: View {
+  public init(id: Int) { self.id = id }
+
   let id: Int
-  var body: some View {
+  public var body: some View {
     VStack {
       Text("id: \(id)")
     }.onAppear {

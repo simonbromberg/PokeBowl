@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  PokemonView.swift
 //  PokeBowl
 //
 //  Created by Simon Bromberg on 2023-11-28.
@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+public struct PokemonView: View {
+  public init() {}
+
   @State private var pokemon: Pokemon?
   private let primaryRange = 1...1017
   private let secondaryRange = 10001...10275
@@ -28,8 +30,8 @@ struct ContentView: View {
       }
     }
   }
-  
-  var body: some View {
+
+  public var body: some View {
     NavigationStack {
       VStack {
         AsyncImage(
@@ -68,5 +70,5 @@ struct ContentView: View {
 }
 
 #Preview {
-  ContentView()
+  PokemonView()
 }

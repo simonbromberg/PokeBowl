@@ -1,25 +1,8 @@
-# OSX
-#
 .DS_Store
-
-# Xcode
-#
-!default.mode1v3
-!default.mode2v3
-!default.pbxuser
-!default.perspectivev3
-*.dSYM
-*.dSYM.zip
-*.hmap
-*.ipa
-*.mode1v3
-*.mode2v3
-*.moved-aside
-*.pbxuser
-*.perspectivev3
-*.xccheckout
-*.xcuserstate
-build/
-DerivedData
-ios/.xcode.env.local
-xcuserdata
+/.build
+/Packages
+xcuserdata/
+DerivedData/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc

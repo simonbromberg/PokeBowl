@@ -1,0 +1,11 @@
+# file options
+
+--exclude build,fastlane,SourcePackages,vendor
+
+# format options
+--indent 2
+
+# rules
+--ranges no-space
+
+--minversion 0.52
