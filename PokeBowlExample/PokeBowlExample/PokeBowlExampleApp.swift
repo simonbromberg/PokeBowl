@@ -12,7 +12,7 @@ import SwiftUI
 struct PokeBowlExampleApp: App {
   var body: some Scene {
     WindowGroup {
-      PokemonView()
+      PokemonLoadingView()
     }
   }
 }
