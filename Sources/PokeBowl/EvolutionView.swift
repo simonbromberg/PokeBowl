@@ -8,20 +8,17 @@
 import SwiftUI
 
 public struct EvolutionView: View {
-  public init(id: Int) { self.id = id }
+  let evolutions: [Pokemon]
 
-  let id: Int
   public var body: some View {
     VStack {
-      Text("id: \(id)")
-    }.onAppear {
-//      Task {
-//        try await Networking.shared.loadEvolution(id)
-//      }
+      ForEach(evolutions) {
+        Text($0.name)
+      }
     }
   }
 }
 
 #Preview {
-  EvolutionView(id: 1)
+  EvolutionView(evolutions: [])
 }
