@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		F47E78482B165BCE00F597FA /* PokeBowlExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47E78472B165BCE00F597FA /* PokeBowlExampleApp.swift */; };
 		F47E784C2B165BCF00F597FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47E784B2B165BCF00F597FA /* Assets.xcassets */; };
 		F47E784F2B165BCF00F597FA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47E784E2B165BCF00F597FA /* Preview Assets.xcassets */; };
-		F47E78572B165C0A00F597FA /* PokeBowl in Frameworks */ = {isa = PBXBuildFile; productRef = F47E78562B165C0A00F597FA /* PokeBowl */; };
+		F4BAD1E22B3D436300D14856 /* PokeBowl in Frameworks */ = {isa = PBXBuildFile; productRef = F4BAD1E12B3D436300D14856 /* PokeBowl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F47E78572B165C0A00F597FA /* PokeBowl in Frameworks */,
+				F4BAD1E22B3D436300D14856 /* PokeBowl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = PokeBowlExample;
 			packageProductDependencies = (
-				F47E78562B165C0A00F597FA /* PokeBowl */,
+				F4BAD1E12B3D436300D14856 /* PokeBowl */,
 			);
 			productName = PokeBowlExample;
 			productReference = F47E78442B165BCE00F597FA /* PokeBowlExample.app */;
@@ -114,7 +114,7 @@
 			);
 			mainGroup = F47E783B2B165BCE00F597FA;
 			packageReferences = (
-				F47E78552B165C0A00F597FA /* XCRemoteSwiftPackageReference "PokeBowl" */,
+				F4BAD1E02B3D436300D14856 /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = F47E78452B165BCE00F597FA /* Products */;
 			projectDirPath = "";
@@ -349,21 +349,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		F47E78552B165C0A00F597FA /* XCRemoteSwiftPackageReference "PokeBowl" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simonbromberg/PokeBowl/";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		F4BAD1E02B3D436300D14856 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F47E78562B165C0A00F597FA /* PokeBowl */ = {
+		F4BAD1E12B3D436300D14856 /* PokeBowl */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F47E78552B165C0A00F597FA /* XCRemoteSwiftPackageReference "PokeBowl" */;
 			productName = PokeBowl;
 		};
 /* End XCSwiftPackageProductDependency section */
