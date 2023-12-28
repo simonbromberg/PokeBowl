@@ -11,6 +11,7 @@ struct SpeciesView: View {
   let species: Species
 
   @State private var variety: Pokemon?
+  @State private var imageIndex = 0
 
   @State private var showingEvolutions = false
 
@@ -18,13 +19,16 @@ struct SpeciesView: View {
     NavigationStack {
       VStack {
         AsyncImage(
-          url: variety?.imageURL
+          url: (variety?.images[imageIndex]).flatMap { .init(string: $0) }
         ) { image in
           image
             .resizable()
             .aspectRatio(contentMode: .fit)
         } placeholder: {
           ProgressView()
+        }
+        .onTapGesture {
+          imageIndex = (imageIndex + 1) % (variety?.images.count ?? 0)
         }
         .padding()
         Text((variety?.name ?? species.name).localizedCapitalized)
@@ -57,6 +61,7 @@ struct SpeciesView: View {
       .padding()
       .onChange(of: species) {
         variety = species.varieties.first
+        imageIndex = 0
       }
       .onAppear {
         variety = species.varieties.first
@@ -74,7 +79,7 @@ struct SpeciesView: View {
         .init(
           id: 1,
           name: "Foo",
-          imageURL: .init(string: "https://placekitten.com/408/287")!,
+          images: ["https://placekitten.com/408/287"],
           types: []
         ),
       ],

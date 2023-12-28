@@ -168,9 +168,10 @@ private extension Pokemon {
     self.init(
       id: response.id,
       name: response.name,
-      imageURL: .init(
-        string: response.sprites.other.officialArtwork.frontDefault
-      )!,
+      images: [
+        response.sprites.other.officialArtwork.frontDefault,
+        response.sprites.other.officialArtwork.frontShiny
+      ].compactMap { $0 },
       types: response.types
     )
   }

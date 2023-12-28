@@ -17,13 +17,13 @@ struct Species: Identifiable, Hashable {
 struct Pokemon: Identifiable, Hashable {
   let name: String
   let id: Int
-  let imageURL: URL
+  let images: [String]
   let types: [PokemonType]
 
-  internal init(id: Int, name: String, imageURL: URL, types: [PokemonType]) {
+  internal init(id: Int, name: String, images: [String], types: [PokemonType]) {
     self.id = id
     self.name = name
-    self.imageURL = imageURL
+    self.images = images
     self.types = types
   }
 }
