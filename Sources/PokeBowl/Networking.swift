@@ -126,7 +126,7 @@ private struct PokemonResponse: Decodable {
 
       struct OfficialArtwork: Decodable {
         let frontDefault: String
-        let frontShiny: String
+        let frontShiny: String?
       }
     }
   }
