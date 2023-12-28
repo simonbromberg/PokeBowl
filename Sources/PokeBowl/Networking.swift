@@ -8,10 +8,10 @@
 import Foundation
 
 struct Networking {
-  let baseURL: URL
+  let baseURLString: String
 
   static var shared: Self = Networking(
-    baseURL: .init(string: "https://pokeapi.co/api/v2/pokemon/")!
+    baseURLString: "https://pokeapi.co/api/v2/"
   )
 
   private let decoder: JSONDecoder = {
@@ -20,28 +20,43 @@ struct Networking {
     return decoder
   }()
 
-  func loadPokemon(_ id: Int) async throws -> Pokemon {
-    let (data, _) = try await URLSession.shared.data(from: baseURL.appending(path: "\(id)"))
-    let response = try decoder.decode(PokemonResponse.self, from: data)
+  func loadPokemon(_ id: Int) async throws -> Species {
+    let speciesResponse = try await getSpecies("\(baseURLString)pokemon-species/\(id)")
+    let varieties = try await speciesResponse.varieties.map {
+      let response = try await getPokemon($0.pokemon.url)
+      return Pokemon(response)
+    }
 
-    let species = try await getSpecies(response.species.url)
-    let evolution = try await getEvolutionChain(species.evolutionChain.url)
-    let evolutions = try await evolution.chain.evolvesTo.map {
-      let speciesLink = $0.species
-      let species = try await getSpecies(speciesLink.url)
-      let varieties = species.varieties
-      return try await varieties.map {
-        try await decoder.decode(PokemonResponse.self, from: getData($0.pokemon.url))
+    let evolution = try await getEvolutionChain(speciesResponse.evolutionChain.url)
+    var evolutions = try await evolution.chain.evolvesTo.map {
+      try await expandEvolution($0)
+    }
+    
+    let evolutionBaseSpecies = try await getSpecies(evolution.chain.species.url)
+    if evolutionBaseSpecies.name != speciesResponse.name {
+      let baseSpeciesVarieties = try await evolutionBaseSpecies.varieties.map {
+        let response = try await getPokemon($0.pokemon.url)
+        return Pokemon(response)
       }
-    }.flatMap { $0 }
-
+      evolutions.insert(
+        .init(
+          id: evolutionBaseSpecies.id,
+          name: evolutionBaseSpecies.name,
+          varieties: baseSpeciesVarieties,
+          evolutions: evolutions
+        ),
+        at: 0
+      )
+    }
 
     return .init(
-      response,
+      id: speciesResponse.id,
+      name: speciesResponse.name,
+      varieties: varieties,
       evolutions: evolutions
     )
   }
-
+  
   private func getSpecies(_ urlString: String) async throws -> PokemonSpecies {
     try await decoder.decode(PokemonSpecies.self, from: getData(urlString))
   }
@@ -50,40 +65,35 @@ struct Networking {
     try await decoder.decode(EvolutionChain.self, from: getData(urlString))
   }
 
+  private func getPokemon(_ urlString: String) async throws -> PokemonResponse {
+    try await decoder.decode(PokemonResponse.self, from: getData(urlString))
+  }
+
+  private func expandEvolution(_ evolution: EvolutionChain.ChainLink) async throws -> Species {
+    let species = try await getSpecies(evolution.species.url)
+    let varieties = try await species.varieties.map {
+      let response = try await getPokemon($0.pokemon.url)
+      return Pokemon(response)
+    }
+    
+    let evolutions = try await evolution.evolvesTo.map {
+      try await expandEvolution($0)
+    }
+
+    return .init(
+      id: species.id,
+      name: species.name,
+      varieties: varieties,
+      evolutions: evolutions
+    )
+  }
+
   // MARK: - Helpers
 
   private func getData(_ urlString: String) async throws -> Data {
     let url = try URL(string: urlString).unwrap()
     let (data, _) = try await URLSession.shared.data(from: url)
     return data
-  }
-}
-
-struct Pokemon: Identifiable, Hashable {
-  let name: String
-  let evolutions: [Pokemon]
-  let id: Int
-  let imageURL: URL
-  let types: [PokemonType]
-
-  internal init(id: Int, name: String, evolutions: [Pokemon], imageURL: URL, types: [PokemonType]) {
-    self.id = id
-    self.name = name
-    self.evolutions = evolutions
-    self.imageURL = imageURL
-    self.types = types
-  }
-
-  fileprivate init(_ response: PokemonResponse, evolutions: [PokemonResponse] = []) {
-    self.init(
-      id: response.id,
-      name: response.name,
-      evolutions: evolutions.map { .init($0) },
-      imageURL: .init(
-        string: response.sprites.other.officialArtwork.frontDefault
-      )!,
-      types: response.types
-    )
   }
 }
 
@@ -123,6 +133,8 @@ private struct PokemonResponse: Decodable {
 }
 
 struct PokemonSpecies: Decodable {
+  let id: Int
+  let name: String
   let evolutionChain: Link
   let varieties: [Variety]
 
@@ -149,4 +161,17 @@ struct Link: Decodable {
 struct NameLink: Decodable {
   let name: String
   let url: String
+}
+
+private extension Pokemon {
+  init(_ response: PokemonResponse) {
+    self.init(
+      id: response.id,
+      name: response.name,
+      imageURL: .init(
+        string: response.sprites.other.officialArtwork.frontDefault
+      )!,
+      types: response.types
+    )
+  }
 }

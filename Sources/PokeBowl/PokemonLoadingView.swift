@@ -10,9 +10,8 @@ import SwiftUI
 public struct PokemonLoadingView: View {
   public init() {}
 
-  @State private var pokemon: Pokemon?
-  private let primaryRange = 1...1017
-  private let secondaryRange = 10001...10275
+  @State private var pokemon: Species?
+  private let idRange = 1...1025
 
   @State private var id = 1 {
     didSet {
@@ -34,13 +33,10 @@ public struct PokemonLoadingView: View {
   public var body: some View {
     VStack {
       pokemon.map {
-        PokemonView(pokemon: $0)
+        SpeciesView(species: $0)
       }
       Button("Load new Pokemon") {
-        let die = Int.random(in: 1...10)
-        id = .random(
-          in: die < 9 ? primaryRange : secondaryRange
-        )
+        id = .random(in: idRange)
       }
     }
     .onAppear {
