@@ -9,11 +9,16 @@ import SwiftUI
 
 struct SpeciesView: View {
   let species: Species
+  let evolution: Evolution
 
   @State private var variety: Pokemon?
   @State private var imageIndex = 0
 
   @State private var showingEvolutions = false
+
+  private var noEvolutions: Bool {
+    evolution.evolvesTo.isEmpty
+  }
 
   public var body: some View {
     NavigationStack {
@@ -41,17 +46,12 @@ struct SpeciesView: View {
           }
         }
         .opacity(species.varieties.count > 1 ? 1 : 0)
-        Button("Evolution chain") {
-          showingEvolutions = true
+        NavigationLink(destination: EvolutionView(evolution: evolution)) {
+          Text("Evolution Chain")
         }
-        .opacity(species.evolutions.isEmpty ? 0 : 1)
-        .confirmationDialog("Select an evolution", isPresented: $showingEvolutions, titleVisibility: .visible) {
-          ForEach(species.evolutions) { destinationSpecies in
-            NavigationLink(destination: SpeciesView(species: destinationSpecies)) {
-              Text(destinationSpecies.name.localizedCapitalized)
-            }
-          }
-        }
+        .opacity(noEvolutions ? 0 : 1)
+        Text("No evolutions")
+          .opacity(noEvolutions ? 1 : 0)
         HStack {
           ForEach(variety?.types ?? [], id: \.self) {
             Text($0.type.name)
@@ -72,18 +72,7 @@ struct SpeciesView: View {
 
 #Preview {
   SpeciesView(
-    species: .init(
-      id: 1,
-      name: "Test",
-      varieties: [
-        .init(
-          id: 1,
-          name: "Foo",
-          images: ["https://placekitten.com/408/287"],
-          types: []
-        ),
-      ],
-      evolutions: []
-    )
+    species: .test,
+    evolution: .init(species: .test, evolvesTo: [])
   )
 }

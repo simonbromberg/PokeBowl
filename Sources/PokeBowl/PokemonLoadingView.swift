@@ -10,7 +10,8 @@ import SwiftUI
 public struct PokemonLoadingView: View {
   public init() {}
 
-  @State private var pokemon: Species?
+  @State private var response: (Species, Evolution)?
+
   private let idRange = 1...1025
 
   @State private var id = 1 {
@@ -22,7 +23,7 @@ public struct PokemonLoadingView: View {
   func loadPokemon() {
     Task {
       do {
-        pokemon = try await Networking.shared.loadPokemon(id)
+        response = try await Networking.shared.loadPokemon(id)
       } catch {
         print("Pokemon id: \(id)")
         print(error)
@@ -32,8 +33,8 @@ public struct PokemonLoadingView: View {
 
   public var body: some View {
     VStack {
-      pokemon.map {
-        SpeciesView(species: $0)
+      response.map {
+        SpeciesView(species: $0.0, evolution: $0.1)
       }
       Button("Load new Pokemon") {
         id = .random(in: idRange)

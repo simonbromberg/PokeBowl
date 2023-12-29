@@ -20,41 +20,43 @@ struct Networking {
     return decoder
   }()
 
-  func loadPokemon(_ id: Int) async throws -> Species {
+  func loadPokemon(_ id: Int) async throws -> (Species, Evolution) {
     let speciesResponse = try await getSpecies("\(baseURLString)pokemon-species/\(id)")
     let varieties = try await speciesResponse.varieties.map {
       let response = try await getPokemon($0.pokemon.url)
       return Pokemon(response)
     }
 
-    let evolution = try await getEvolutionChain(speciesResponse.evolutionChain.url)
-    var evolutions = try await evolution.chain.evolvesTo.map {
-      try await expandEvolution($0)
-    }
-    
-    let evolutionBaseSpecies = try await getSpecies(evolution.chain.species.url)
-    if evolutionBaseSpecies.name != speciesResponse.name {
-      let baseSpeciesVarieties = try await evolutionBaseSpecies.varieties.map {
-        let response = try await getPokemon($0.pokemon.url)
-        return Pokemon(response)
-      }
-      evolutions.insert(
-        .init(
-          id: evolutionBaseSpecies.id,
-          name: evolutionBaseSpecies.name,
-          varieties: baseSpeciesVarieties,
-          evolutions: evolutions
-        ),
-        at: 0
-      )
+    let chain = try await getEvolutionChain(speciesResponse.evolutionChain.url).chain
+    let evolutionBaseSpecies = try await getSpecies(chain.species.url)
+
+    let baseSpeciesVarieties = try await evolutionBaseSpecies.varieties.map {
+      let response = try await getPokemon($0.pokemon.url)
+      return Pokemon(response)
     }
 
-    return .init(
+    let evolutionBase = Species(
+      id: evolutionBaseSpecies.id,
+      name: evolutionBaseSpecies.name,
+      varieties: baseSpeciesVarieties
+    )
+
+    let evolutions = try await chain.evolvesTo.map {
+      try await expandEvolution($0)
+    }
+
+    let species = Species(
       id: speciesResponse.id,
       name: speciesResponse.name,
-      varieties: varieties,
-      evolutions: evolutions
+      varieties: varieties
     )
+
+    let evolution = Evolution(
+      species: evolutionBase,
+      evolvesTo: evolutions
+    )
+
+    return (species, evolution)
   }
   
   private func getSpecies(_ urlString: String) async throws -> PokemonSpecies {
@@ -69,7 +71,7 @@ struct Networking {
     try await decoder.decode(PokemonResponse.self, from: getData(urlString))
   }
 
-  private func expandEvolution(_ evolution: EvolutionChain.ChainLink) async throws -> Species {
+  private func expandEvolution(_ evolution: EvolutionChain.ChainLink) async throws -> Evolution {
     let species = try await getSpecies(evolution.species.url)
     let varieties = try await species.varieties.map {
       let response = try await getPokemon($0.pokemon.url)
@@ -81,10 +83,8 @@ struct Networking {
     }
 
     return .init(
-      id: species.id,
-      name: species.name,
-      varieties: varieties,
-      evolutions: evolutions
+      species: .init(id: species.id, name: species.name, varieties: varieties),
+      evolvesTo: evolutions
     )
   }
 
