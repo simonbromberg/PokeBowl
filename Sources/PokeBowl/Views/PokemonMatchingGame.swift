@@ -5,6 +5,7 @@
 //  Created by Simon Bromberg on 2023-12-31.
 //
 
+import AsyncMap
 import MatchingGame
 import SwiftUI
 
