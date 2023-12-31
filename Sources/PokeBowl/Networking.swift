@@ -20,7 +20,7 @@ struct Networking {
     return decoder
   }()
 
-  func loadPokemon(_ id: Int) async throws -> (Species, Evolution) {
+  func loadPokemon(id: Int) async throws -> (Species, Evolution) {
     let speciesResponse = try await getSpecies("\(baseURLString)pokemon-species/\(id)")
     let varieties = try await speciesResponse.varieties.map {
       let response = try await getPokemon($0.pokemon.url)
@@ -58,7 +58,33 @@ struct Networking {
 
     return (species, evolution)
   }
-  
+
+  func loadPokemon(limit: Int) async throws -> [Pokemon] {
+    struct Response: Decodable {
+      let count: Int
+      let results: [NameLink]
+    }
+
+    let results = try await decoder.decode(
+      Response.self,
+      from: getData(
+        "\(baseURLString)pokemon/?offset=0&limit=1025"
+      )
+    )
+    .results
+    .shuffled()
+    .prefix(limit)
+
+    return try await results.map {
+      let pokemon = try await decoder.decode(PokemonResponse.self, from: getData($0.url))
+      return .init(pokemon)
+    }
+  }
+
+  func loadImageData(_ url: String) async throws -> Data {
+    try await getData(url)
+  }
+
   private func getSpecies(_ urlString: String) async throws -> PokemonSpecies {
     try await decoder.decode(PokemonSpecies.self, from: getData(urlString))
   }
@@ -77,7 +103,7 @@ struct Networking {
       let response = try await getPokemon($0.pokemon.url)
       return Pokemon(response)
     }
-    
+
     let evolutions = try await evolution.evolvesTo.map {
       try await expandEvolution($0)
     }
@@ -144,7 +170,7 @@ struct PokemonSpecies: Decodable {
   }
 }
 
-public struct EvolutionChain: Decodable {
+struct EvolutionChain: Decodable {
   let id: Int
   let chain: ChainLink
 
@@ -170,7 +196,7 @@ private extension Pokemon {
       name: response.name,
       images: [
         response.sprites.other.officialArtwork.frontDefault,
-        response.sprites.other.officialArtwork.frontShiny
+        response.sprites.other.officialArtwork.frontShiny,
       ].compactMap { $0 },
       types: response.types
     )

@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-public struct PokemonLoadingView: View {
-  public init() {}
-
+struct PokemonLoadingView: View {
   @State private var response: (Species, Evolution)?
 
   private let idRange = 1...1025
@@ -23,7 +21,7 @@ public struct PokemonLoadingView: View {
   func loadPokemon() {
     Task {
       do {
-        response = try await Networking.shared.loadPokemon(id)
+        response = try await Networking.shared.loadPokemon(id: id)
       } catch {
         print("Pokemon id: \(id)")
         print(error)
@@ -31,7 +29,7 @@ public struct PokemonLoadingView: View {
     }
   }
 
-  public var body: some View {
+  var body: some View {
     VStack {
       response.map {
         SpeciesView(species: $0.0, evolution: $0.1)
@@ -47,5 +45,5 @@ public struct PokemonLoadingView: View {
 }
 
 #Preview {
-    PokemonLoadingView()
+  PokemonLoadingView()
 }

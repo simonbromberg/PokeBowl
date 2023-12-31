@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct EvolutionView: View {
+struct EvolutionView: View {
   let inset: String
   let evolution: Evolution
 
@@ -16,7 +16,7 @@ public struct EvolutionView: View {
     self.evolution = evolution
   }
 
-  public var body: some View {
+  var body: some View {
     NavigationStack {
       VStack(alignment: .leading) {
         NavigationLink(destination: SpeciesView(species: evolution.species, evolution: evolution)) {

@@ -1,5 +1,5 @@
 //
-//  PokemonView.swift
+//  SpeciesView.swift
 //  PokeBowl
 //
 //  Created by Simon Bromberg on 2023-11-28.
@@ -20,7 +20,7 @@ struct SpeciesView: View {
     evolution.evolvesTo.isEmpty
   }
 
-  public var body: some View {
+  var body: some View {
     NavigationStack {
       VStack {
         AsyncImage(

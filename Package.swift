@@ -13,11 +13,18 @@ let package = Package(
       targets: ["PokeBowl"]
     ),
   ],
+  dependencies: [
+    .package(url: "https://github.com/simonbromberg/MatchingGame.git", from: "0.0.1"),
+  ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "PokeBowl"),
+      name: "PokeBowl",
+      dependencies: [
+        .product(name: "MatchingGame", package: "MatchingGame"),
+      ]
+    ),
     .testTarget(
       name: "PokeBowlTests",
       dependencies: ["PokeBowl"]

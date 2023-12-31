@@ -17,6 +17,7 @@ struct Evolution: Identifiable {
   var id: Int {
     species.id
   }
+
   let species: Species
   let evolvesTo: [Evolution]
 }
@@ -27,7 +28,7 @@ struct Pokemon: Identifiable, Hashable {
   let images: [String]
   let types: [PokemonType]
 
-  internal init(id: Int, name: String, images: [String], types: [PokemonType]) {
+  init(id: Int, name: String, images: [String], types: [PokemonType]) {
     self.id = id
     self.name = name
     self.images = images

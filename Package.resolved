@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "matchinggame",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbromberg/MatchingGame.git",
+      "state" : {
+        "revision" : "718023262742b6c41aa5177a9142424bdffff546",
+        "version" : "0.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
