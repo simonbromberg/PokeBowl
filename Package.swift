@@ -16,6 +16,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/simonbromberg/AsyncMap.git", from: "0.0.1"),
     .package(url: "https://github.com/simonbromberg/MatchingGame.git", from: "0.0.1"),
+    .package(url: "https://github.com/simonbromberg/OptionalUnwrap.git", from: "0.0.1"),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -25,6 +26,7 @@ let package = Package(
       dependencies: [
         .product(name: "AsyncMap", package: "AsyncMap"),
         .product(name: "MatchingGame", package: "MatchingGame"),
+        .product(name: "OptionalUnwrap", package: "OptionalUnwrap"),
       ]
     ),
     .testTarget(

@@ -17,6 +17,15 @@
         "revision" : "718023262742b6c41aa5177a9142424bdffff546",
         "version" : "0.0.1"
       }
+    },
+    {
+      "identity" : "optionalunwrap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbromberg/OptionalUnwrap.git",
+      "state" : {
+        "revision" : "024982c3c2c30f7aac701b98f0822e7011900d86",
+        "version" : "0.0.1"
+      }
     }
   ],
   "version" : 2
