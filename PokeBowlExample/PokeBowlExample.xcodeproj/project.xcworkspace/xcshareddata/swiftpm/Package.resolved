@@ -1,11 +1,29 @@
 {
   "pins" : [
     {
+      "identity" : "asyncmap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbromberg/AsyncMap.git",
+      "state" : {
+        "revision" : "e21c8957e0ade84904a1ec594e500353908cb4fc",
+        "version" : "0.0.1"
+      }
+    },
+    {
       "identity" : "matchinggame",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbromberg/MatchingGame.git",
       "state" : {
         "revision" : "718023262742b6c41aa5177a9142424bdffff546",
+        "version" : "0.0.1"
+      }
+    },
+    {
+      "identity" : "optionalunwrap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbromberg/OptionalUnwrap.git",
+      "state" : {
+        "revision" : "024982c3c2c30f7aac701b98f0822e7011900d86",
         "version" : "0.0.1"
       }
     }
