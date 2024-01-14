@@ -19,11 +19,28 @@ struct EvolutionView: View {
   var body: some View {
     NavigationStack {
       VStack(alignment: .leading) {
-        NavigationLink(destination: SpeciesView(species: evolution.species, evolution: evolution)) {
-          Text(inset + "• " + evolution.species.name.localizedCapitalized)
+        NavigationLink(
+          destination: SpeciesView(
+            species: evolution.species,
+            evolution: nil
+          )
+        ) {
+          Text(
+            [
+              inset,
+              evolution.species.name.localizedCapitalized,
+            ].joined(separator: "• ")
+          )
+          .font(.title)
         }
         ForEach(evolution.evolvesTo) {
-          EvolutionView(inset: inset + "  ", evolution: .init(species: $0.species, evolvesTo: $0.evolvesTo))
+          EvolutionView(
+            inset: inset + "  ",
+            evolution: .init(
+              species: $0.species,
+              evolvesTo: $0.evolvesTo
+            )
+          )
         }
       }
     }

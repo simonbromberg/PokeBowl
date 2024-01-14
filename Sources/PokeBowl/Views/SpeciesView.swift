@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SpeciesView: View {
   let species: Species
-  let evolution: Evolution
+  let evolution: Evolution?
 
   @State private var variety: Pokemon?
   @State private var imageIndex = 0
@@ -17,7 +17,7 @@ struct SpeciesView: View {
   @State private var showingEvolutions = false
 
   private var noEvolutions: Bool {
-    evolution.evolvesTo.isEmpty
+    evolution?.evolvesTo.isEmpty == true
   }
 
   var body: some View {
@@ -25,12 +25,16 @@ struct SpeciesView: View {
       VStack {
         AsyncImage(
           url: (variety?.images[imageIndex]).flatMap { .init(string: $0) }
-        ) { image in
-          image
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-        } placeholder: {
-          ProgressView()
+        ) { phase in
+          if let image = phase.image {
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+          } else if phase.error != nil {
+            // TODO: error
+          } else {
+            // placeholder
+          }
         }
         .onTapGesture {
           imageIndex = (imageIndex + 1) % (variety?.images.count ?? 0)
@@ -46,10 +50,28 @@ struct SpeciesView: View {
           }
         }
         .opacity(species.varieties.count > 1 ? 1 : 0)
-        NavigationLink(destination: EvolutionView(evolution: evolution)) {
-          Text("Evolution Chain")
+        Button("Evolution Chain") {
+          showingEvolutions.toggle()
         }
-        .opacity(noEvolutions ? 0 : 1)
+        .sheet(isPresented: $showingEvolutions) {
+          evolution.map { e in
+            VStack {
+              Text("\(species.name.localizedCapitalized) Evolutions")
+                .font(.title)
+                .padding()
+              EvolutionView(evolution: e)
+              Button {
+                showingEvolutions.toggle()
+              } label: {
+                 Image(systemName: "xmark.circle")
+                  .resizable()
+                  .frame(width: 30, height: 30)
+                  .tint(.primary)
+              }
+            }
+          }
+        }
+        .opacity((evolution == nil || noEvolutions) ? 0 : 1)
         Text("No evolutions")
           .opacity(noEvolutions ? 1 : 0)
         HStack {
