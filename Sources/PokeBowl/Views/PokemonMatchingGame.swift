@@ -57,7 +57,7 @@ struct PokemonMatchingGame: View {
         }
       }
       .fullScreenCover(isPresented: $showingSheet) {
-        MatchingContentView(matchables: ImageCache.shared.images, squareSize: 100)
+        MatchingContentView(matchables: ImageCache.shared.images)
       }
       ProgressView()
         .foregroundStyle(Color.black)
