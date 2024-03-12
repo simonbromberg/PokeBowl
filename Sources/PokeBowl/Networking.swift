@@ -84,7 +84,15 @@ struct Networking {
   }
 
   func loadImageData(_ url: String) async throws -> Data {
-    try await getData(url)
+    if let cachedImageData = ImageCache.fetchImageData(url) {
+      print("Loaded image from cache!")
+      return cachedImageData
+    }
+
+    let fetchedData = try await getData(url)
+    print("Saving image to cache!")
+    ImageCache.saveImageData(imageData: fetchedData, to: url)
+    return fetchedData
   }
 
   private func getSpecies(_ urlString: String) async throws -> PokemonSpecies {
