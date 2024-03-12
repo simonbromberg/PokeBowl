@@ -50,7 +50,7 @@ struct SpeciesView: View {
           }
         }
         .opacity(species.varieties.count > 1 ? 1 : 0)
-        Button("Evolution Chain") {
+        Button("🧬 Evolution Chain") {
           showingEvolutions.toggle()
         }
         .sheet(isPresented: $showingEvolutions) {
@@ -77,6 +77,8 @@ struct SpeciesView: View {
         HStack {
           ForEach(variety?.types ?? [], id: \.self) {
             Text($0.type.name)
+              .foregroundStyle(Color.secondary)
+
           }
         }
       }

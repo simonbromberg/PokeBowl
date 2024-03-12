@@ -34,9 +34,11 @@ struct PokemonLoadingView: View {
       response.map {
         SpeciesView(species: $0.0, evolution: $0.1)
       }
-      Button("Load new Pokemon") {
+      Button("🔄 Load new Pokemon") {
         id = .random(in: idRange)
       }
+      .buttonStyle(.borderedProminent)
+      .tint(.green)
     }
     .onAppear {
       loadPokemon()
