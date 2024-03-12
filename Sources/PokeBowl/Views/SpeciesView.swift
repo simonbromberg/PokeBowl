@@ -97,6 +97,9 @@ struct SpeciesView: View {
 #Preview {
   SpeciesView(
     species: .test,
-    evolution: .init(species: .test, evolvesTo: [])
+    evolution: .init(
+      species: .test,
+      evolvesTo: [.test]
+    )
   )
 }

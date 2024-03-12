@@ -41,18 +41,35 @@ struct Pokemon: Identifiable, Hashable {
 extension Species {
   static let test: Self = .init(
     id: 1,
-    name: "Test",
-    varieties: [
-      .init(
-        id: 1,
-        name: "Foo",
-        images: ["https://placekitten.com/408/287"],
-        types: []
-      ),
-    ]
+    name: "Gorochu",
+    varieties: .test
   )
+}
+
+extension Pokemon {
+  static let test: Self = .init(
+    id: 1,
+    name: "Foo",
+    images: ["https://i.imgur.com/Jek4Pl7.png"],
+    types: .test
+  )
+}
+
+extension Array where Element == Pokemon {
+  static let test: Self = [.test]
 }
 
 extension Evolution {
   static let test: Self = .init(species: .test, evolvesTo: [])
+}
+
+extension Array where Element == PokemonType {
+  static let test: Self = [
+    .init(
+      slot: 0,
+      type: .init(
+        name: "grass", url: ""
+      )
+    )
+  ]
 }
