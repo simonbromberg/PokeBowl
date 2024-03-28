@@ -20,6 +20,10 @@ public struct PokeBowlHomeView: View {
         .tabItem {
           Label("Matching", systemImage: "rectangle.on.rectangle.circle")
         }
+      GuessingView()
+        .tabItem {
+          Label("Guessing", systemImage: "questionmark.circle.fill")
+        }
     }
   }
 }
