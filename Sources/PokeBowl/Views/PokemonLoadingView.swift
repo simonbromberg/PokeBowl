@@ -12,7 +12,7 @@ struct PokemonLoadingView: View {
 
   private let idRange = 1...1025
 
-  @State private var id = 1 {
+  @State private var id: Int = .randomPokemonId() {
     didSet {
       loadPokemon()
     }
@@ -35,7 +35,7 @@ struct PokemonLoadingView: View {
         SpeciesView(species: $0.0, evolution: $0.1)
       }
       Button("🔄 Load new Pokemon") {
-        id = .random(in: idRange)
+        id = .randomPokemonId()
       }
       .buttonStyle(.borderedProminent)
       .tint(.green)
@@ -43,6 +43,14 @@ struct PokemonLoadingView: View {
     .onAppear {
       loadPokemon()
     }
+  }
+}
+
+extension Int {
+  static let pokemonIdRange = 1...1025
+
+  static func randomPokemonId() -> Int {
+    .random(in: pokemonIdRange)
   }
 }
 
