@@ -12,7 +12,7 @@ public struct PokeBowlHomeView: View {
 
   public var body: some View {
     TabView {
-      PokemonLoadingView()
+      PokedexView()
         .tabItem {
           Label("Pokedex", systemImage: "book")
         }

@@ -10,8 +10,6 @@ import SwiftUI
 struct PokemonLoadingView: View {
   @State private var response: (Species, Evolution)?
 
-  private let idRange = 1...1025
-
   @State private var id: Int = .randomPokemonId() {
     didSet {
       loadPokemon()
@@ -47,11 +45,13 @@ struct PokemonLoadingView: View {
 }
 
 extension Int {
-  static let pokemonIdRange = 1...1025
-
   static func randomPokemonId() -> Int {
-    .random(in: pokemonIdRange)
+    .random(in: .pokemonIds)
   }
+}
+
+extension ClosedRange where Bound == Int {
+  static let pokemonIds = 1...1025
 }
 
 #Preview {
