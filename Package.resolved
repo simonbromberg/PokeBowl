@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbromberg/MatchingGame.git",
       "state" : {
-        "revision" : "325e4f1c545f9a5c86dfdf3a5fa743b7ca9ad792",
-        "version" : "0.1.0"
+        "revision" : "98f9b49e00eba13aee0214fd6b8b24f1419d287a",
+        "version" : "0.2.0"
       }
     },
     {
